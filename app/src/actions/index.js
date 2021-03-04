@@ -10,12 +10,12 @@ export const FETCHING_CHARACTER_FAILURE = "FETCHING_CHARACTER_FAILURE";
 
 
 
-export const prevPage = (pageNumber, dispatch) => {
+export const prevPage = (pageNumber) => (dispatch)=> {
     console.log("prev page function called  page number :",pageNumber)
     dispatch({type: PREV_PAGE, payload: pageNumber});
 }
 
-export const nextPage = (pageNumber, dispatch) => {
+export const nextPage = (pageNumber) => (dispatch) => {
     console.log("next page function called  page number :",pageNumber)
     dispatch({type: NEXT_PAGE, payload: pageNumber});
 }
@@ -25,13 +25,11 @@ const headers = {
 }
 
 
-export const getCharacters = () => (dispatch) => { //= (pageNumber, dispatch) => {
+export const getCharacters = (pageNumber) => (dispatch) => {
 
    // console.log("getCharacters API called  page number :",pageNumber)
     dispatch({type: FETCHING_CHARACTER_START});
-
-   
-    axios.get(`${BASE_URL}`) //+ ${pageNumber}
+    axios.get(`${BASE_URL}+ ${pageNumber} `) 
     .then(response => {  dispatch({ type: FETCHING_CHARACTER_SUCCESS, payload: response.data.results});
     console.log("getCharacters API called  success:",response.data.results)
      })

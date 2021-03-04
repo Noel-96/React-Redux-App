@@ -4,7 +4,7 @@ import { BASE_URL }  from './constants'
 
 import Character from './components/Character.js';
 import { Container, Row, Col, Button } from 'reactstrap';
-import { getCharacters } from "./actions";
+import { getCharacters, prevPage, nextPage } from "./actions";
 import { connect } from "react-redux";
 import styled from 'styled-components'
 
@@ -20,11 +20,11 @@ const App = (props) => {
     //   .then(response =>  setrickAndMortyCharacters(response.data.results)
     //   )
     //   .catch(err => console.log(err))
-    props.getCharacters();
-  }, [props.getCharacters])
+    props.getCharacters(props.state.pageNumberState);
+  }, [props.state.characterState])
 
-
-
+  // console.log("state props in app.js",props)
+  //console.log("state props in app.js",props.getCharacters())
   // function prevPage() {
   //   if (pageNumber == 1){
 
@@ -45,17 +45,17 @@ const App = (props) => {
       <MainContainer xs="2">
         <LeftContainer>
         <Button color="primary" size="lg" 
-        //onClick={() => prevPage()}
+        onClick={props.state.prevPage(props.state.pageNumberState)}
         >Previous</Button>
         </LeftContainer>
           <CenterContainer class="Container">
-            {props.characterState.map(char => {
+            {props.state.characterState.map(char => {
               return <Character key={char.id} data={char}/>
                 })}
           </CenterContainer>
           <RightContainer>
             <Button color="primary" size="lg" 
-           // onClick={() => nextPage()}
+           onClick={props.state.nextPage(props.state.pageNumberState)}
             >Next</Button>    
           </RightContainer>
       </MainContainer>
@@ -87,15 +87,17 @@ const RightContainer = styled.div`
 const CenterContainer = styled.div`
 `
 
-const mapStateToProps = (state) => {
-  //console.log("characterState in app success:",state.appReducer.characterState)
+function mapStateToProps(state){
+  console.log("State mapStateToProps",state)
   return {
-     characterState: state.appReducer.characterState,
-     pageNumberState: state.appReducer.pageNumberState,
-     loading: state.appReducer.loading,
+    state
   }   
 };
 
-const mapDispatchToProps =  {getCharacters}
+const mapDispatchToProps =  {
+   getCharacters,
+   prevPage,
+   nextPage,
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
